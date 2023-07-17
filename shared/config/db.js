@@ -13,4 +13,6 @@ const dbConfig ={
     dialect : DIALECT
 }
 
-module.exports ={dbConfig}
+module.exports={
+development:dbConfig
+}
