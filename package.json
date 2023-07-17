@@ -1,7 +1,6 @@
 {
   "name": "virtualgaming",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js"
@@ -15,5 +14,14 @@
     "mysql2": "^3.5.1",
     "nodemon": "^3.0.1",
     "sequelize": "^6.32.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Virtual-Streaming/VirtualGaming.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Virtual-Streaming/VirtualGaming/issues"
+  },
+  "homepage": "https://github.com/Virtual-Streaming/VirtualGaming#readme",
+  "description": ""
 }
