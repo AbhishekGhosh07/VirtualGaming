@@ -14,7 +14,11 @@ module.exports=(sequelize,DataTypes)=>{
         },
         isAdmin:{
             type:DataTypes.BOOLEAN
+        },
+        token:{
+            type:DataTypes.STRING
         }
+       
     })
     return User;
 }
