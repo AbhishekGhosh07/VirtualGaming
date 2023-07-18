@@ -1,23 +1,35 @@
-const db = require('../shared/db')
+const db = require('../shared/db');
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const addUser =async(req,res)=>{
+
+const loginUser = async(req,res)=>{
     const{email,password} = req.body;
-    let user=await db.users.findOne({where: {
+    console.log(email);
+    const user= await db.users.findOne({
+        where: {
         email: email
-      }})
+      }});
+      console.log(user);
     bcrypt.compare(password,user.password,(err,result)=>{
         if(result){
-                console.log("success");
+                const token = jwt.sign(
+                    {email:email},
+                    process.env.TOKEN_KEY,
+                    {
+                    expiresIn: "2h",
+                    }
+
+                );
+                user.token=token;
+                
+                res.header("x-access-token",token).status(200).send(user);
           }
         else{
                 
                 console.log("failure");
         }
       })
-
-    res.send("OK");
-
 }
 
 const registerUser =async(req,res)=>{
@@ -43,4 +55,4 @@ const registerUser =async(req,res)=>{
    }
 }
 
-module.exports = {addUser,registerUser};
+module.exports = {loginUser,registerUser};
