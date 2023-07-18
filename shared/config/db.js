@@ -1,5 +1,4 @@
 require('dotenv').config();
-
 const {DB_USER,DB_PASS,DB_HOST,DB_SCHEMA,DB_PORT} = process.env;
 
 const DIALECT = "mysql"
