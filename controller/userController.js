@@ -4,13 +4,12 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const loginUser = async(req,res)=>{
+  try{
     const{email,password} = req.body;
-    console.log(email);
     const user= await db.users.findOne({
         where: {
         email: email
       }});
-      console.log(user);
     bcrypt.compare(password,user.password,(err,result)=>{
         if(result){
                 const token = jwt.sign(
@@ -21,20 +20,23 @@ const loginUser = async(req,res)=>{
                     }
 
                 );
-                user.token=token;
-                
+                user.token=token;   
                 res.header("x-access-token",token).status(200).send(user);
           }
-        else{
-                
-                console.log("failure");
-        }
+          else{
+            res.status(400);
+          }
       })
+      res.status(400);
+    }
+    catch(e){
+      console.log(e)
+    }
+     
 }
 
 const registerUser =async(req,res)=>{
    try{
-    console.log(req.body)
     const { name, email, password } = req.body;
     const oldUser = await db.users.findOne({ where: { email: email } });
     if (oldUser) {
@@ -48,7 +50,10 @@ const registerUser =async(req,res)=>{
         password: encryptedPassword,
         isAdmin:true
       });
-      res.status(201).json(user);
+      
+      const token = jwt.sign({email:email},process.env.TOKEN_KEY,{expiresIn: "2h"});
+      user.token=token;
+      res.header("x-access-token",token).status(201).json(user);
    }
    catch(e){
     console.log(e)
